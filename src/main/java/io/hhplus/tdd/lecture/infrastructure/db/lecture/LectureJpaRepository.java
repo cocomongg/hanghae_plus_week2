@@ -1,4 +1,4 @@
-package io.hhplus.tdd.lecture.infrastructure.persistence.lecture;
+package io.hhplus.tdd.lecture.infrastructure.db.lecture;
 
 import io.hhplus.tdd.lecture.domain.lecture.model.Lecture;
 import org.springframework.data.jpa.repository.JpaRepository;

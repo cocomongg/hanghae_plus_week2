@@ -1,6 +1,6 @@
-package io.hhplus.tdd.lecture.infrastructure.persistence.lecture;
+package io.hhplus.tdd.lecture.infrastructure.db.lecture;
 
-import io.hhplus.tdd.lecture.domain.lecture.repository.LectureRepository;
+import io.hhplus.tdd.lecture.domain.lecture.LectureRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

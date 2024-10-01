@@ -1,5 +1,6 @@
-package io.hhplus.tdd.lecture.interfaces.api.common.error;
+package io.hhplus.tdd.lecture.interfaces.api;
 
+import io.hhplus.tdd.lecture.interfaces.api.common.response.ApiErrorResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

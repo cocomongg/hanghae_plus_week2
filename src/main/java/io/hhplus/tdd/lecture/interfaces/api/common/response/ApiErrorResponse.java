@@ -1,4 +1,4 @@
-package io.hhplus.tdd.lecture.interfaces.api.common.error;
+package io.hhplus.tdd.lecture.interfaces.api.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
