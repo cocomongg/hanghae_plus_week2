@@ -6,26 +6,26 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
-import lombok.Getter;
 
-@Getter
 @Entity
-public class Lecture {
-
+public class LectureApplyHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "title", nullable = false)
-    private String title;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    @Column(name = "description", nullable = false)
-    private String description;
+    @Column(name = "lecture_id", nullable = false)
+    private Long lectureId;
+
+    @Column(name = "apply_status", nullable = false)
+    private ApplyStatus applyStatus;
+
+    @Column(name = "applied_at", nullable = false)
+    private LocalDateTime appliedAt;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }

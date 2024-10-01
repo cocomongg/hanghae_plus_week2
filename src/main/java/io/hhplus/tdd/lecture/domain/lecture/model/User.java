@@ -10,18 +10,15 @@ import lombok.Getter;
 
 @Getter
 @Entity
-public class Lecture {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "title", nullable = false)
-    private String title;
-
-    @Column(name = "description", nullable = false)
-    private String description;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
