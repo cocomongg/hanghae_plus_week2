@@ -44,9 +44,6 @@ public class LectureOption {
     @Column(name = "max_apply_count")
     private int maxApplyCount;
 
-    @Column(name = "current_apply_count")
-    private int currentApplyCount;
-
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 

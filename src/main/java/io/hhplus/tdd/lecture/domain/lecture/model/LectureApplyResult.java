@@ -17,8 +17,8 @@ public class LectureApplyResult {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
 
     @Column(name = "lecture_id", nullable = false)
     private Long lectureId;
