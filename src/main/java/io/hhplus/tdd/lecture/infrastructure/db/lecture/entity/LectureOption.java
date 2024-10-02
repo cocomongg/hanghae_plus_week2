@@ -1,5 +1,6 @@
 package io.hhplus.tdd.lecture.infrastructure.db.lecture.entity;
 
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,9 +10,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class LectureOption {
 
@@ -27,10 +34,10 @@ public class LectureOption {
     @Column(name = "lecture_status", nullable = false)
     private LectureStatus status;
 
-    @Column(name = "lecture_start_at")
+    @Column(name = "lecture_start_at", nullable = false)
     private LocalDateTime lectureStartAt;
 
-    @Column(name = "lecture_end_at")
+    @Column(name = "lecture_end_at", nullable = false)
     private LocalDateTime lectureEndAt;
 
     @Column(name = "apply_start_at")
@@ -47,4 +54,19 @@ public class LectureOption {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public LectureOptionInfo toLectureOptionInfo() {
+        return LectureOptionInfo.builder()
+            .lectureOptionId(this.lectureOptionId)
+            .lectureId(this.lectureId)
+            .status(this.status)
+            .lectureStartAt(this.lectureStartAt)
+            .lectureEndAt(this.lectureEndAt)
+            .applyBeginAt(this.applyBeginAt)
+            .applyEndAt(this.applyEndAt)
+            .maxApplyCount(this.maxApplyCount)
+            .createdAt(this.createdAt)
+            .updatedAt(this.updatedAt)
+            .build();
+    }
 }

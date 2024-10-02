@@ -1,19 +1,23 @@
 package io.hhplus.tdd.lecture.interfaces.api.lecture;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class LectureResponse {
 
+    @Builder
     @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class GetLectures {
         private Long lectureId;
         private String title;
         private String description;
+        private List<Long> lectureOptionIds;
+        private Long lecturerId;
+        private String lecturerName;
         private LocalDateTime createdAt;
     }
 

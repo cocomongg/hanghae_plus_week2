@@ -1,21 +1,21 @@
 package io.hhplus.tdd.lecture.infrastructure.db.lecture.entity;
 
-import jakarta.persistence.CascadeType;
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Lecture {
 
@@ -38,4 +38,15 @@ public class Lecture {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public LectureInfo toLecturerInfo() {
+        return LectureInfo.builder()
+            .lectureId(this.lectureId)
+            .title(this.title)
+            .description(this.description)
+            .lecturerId(this.lecturerId)
+            .createdAt(this.createdAt)
+            .updatedAt(this.updatedAt)
+            .build();
+    }
 }

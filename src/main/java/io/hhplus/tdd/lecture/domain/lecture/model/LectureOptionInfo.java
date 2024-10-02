@@ -2,10 +2,11 @@ package io.hhplus.tdd.lecture.domain.lecture.model;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class LectureOptionInfo {
     private Long lectureOptionId;
     private Long lectureId;
