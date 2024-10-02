@@ -1,6 +1,6 @@
-package io.hhplus.tdd.lecture.infrastructure.db.lecture;
+package io.hhplus.tdd.lecture.infrastructure.db.lecture.repository;
 
-import io.hhplus.tdd.lecture.domain.lecture.model.Lecture;
+import io.hhplus.tdd.lecture.infrastructure.db.lecture.entity.Lecture;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

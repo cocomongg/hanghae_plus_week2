@@ -1,4 +1,4 @@
-package io.hhplus.tdd.lecture.domain.lecture.model;
+package io.hhplus.tdd.lecture.infrastructure.db.member.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,12 +10,12 @@ import lombok.Getter;
 
 @Getter
 @Entity
-public class Lecturer {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lecturer_id")
-    private Long lecturerId;
+    @Column(name = "member_id")
+    private Long memberId;
 
     @Column(name = "name", nullable = false)
     private String name;
