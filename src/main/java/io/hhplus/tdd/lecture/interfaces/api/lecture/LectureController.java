@@ -1,12 +1,12 @@
 package io.hhplus.tdd.lecture.interfaces.api.lecture;
 
+import io.hhplus.tdd.lecture.application.lecture.LectureDto.LectureItem;
 import io.hhplus.tdd.lecture.application.lecture.LectureFacade;
 import io.hhplus.tdd.lecture.interfaces.api.common.response.ApiResponse;
 import io.hhplus.tdd.lecture.interfaces.api.common.response.PageResponse;
 import io.hhplus.tdd.lecture.interfaces.api.lecture.LectureRequest.ApplyLecture;
 import io.hhplus.tdd.lecture.interfaces.api.lecture.LectureResponse.GetApplicableLectures;
 import io.hhplus.tdd.lecture.interfaces.api.lecture.LectureResponse.GetLectureApplyHistories;
-import io.hhplus.tdd.lecture.interfaces.api.lecture.LectureResponse.GetLectures;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ public class LectureController {
     private final LectureFacade lectureFacade;
 
     @GetMapping("")
-    public ApiResponse<List<GetLectures>> getLectures() {
+    public ApiResponse<List<LectureItem>> getLectures() {
         return ApiResponse.OK(lectureFacade.getLectures());
     }
 

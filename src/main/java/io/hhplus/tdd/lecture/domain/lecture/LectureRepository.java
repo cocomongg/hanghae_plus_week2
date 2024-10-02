@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface LectureRepository {
 
     List<LectureInfo> getLectures();
-    Map<Long, LecturerInfo> getLecturerMap(List<Long> lecturerIds);
 
-    Map<Long, List<LectureOptionInfo>> getLectureOptionMap(List<Long> lectureIds);
+    List<LecturerInfo> getLecturers(List<Long> lecturerIds);
 }
