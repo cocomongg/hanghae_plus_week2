@@ -14,8 +14,8 @@ public class Lecturer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "lecturer_id")
+    private Long lecturerId;
 
     @Column(name = "name", nullable = false)
     private String name;
