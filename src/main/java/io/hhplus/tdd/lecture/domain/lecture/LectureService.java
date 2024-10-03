@@ -36,8 +36,8 @@ public class LectureService {
         lectureRepository.increaseCurrentApplyCapacity(lectureOptionId);
     }
 
-    public void saveApplyHistory(CreateApplyHistory command) {
-        lectureRepository.saveApplyHistory(command);
+    public LectureApplyHistoryInfo saveApplyHistory(CreateApplyHistory command) {
+        return lectureRepository.saveApplyHistory(command);
     }
 
     public boolean existsAppliedLectureHistory(Long memberId, Long lectureId) {

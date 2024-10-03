@@ -20,7 +20,7 @@ public interface LectureRepository {
 
     LectureOptionInfo increaseCurrentApplyCapacity(Long lectureOptionId);
 
-    void saveApplyHistory(CreateApplyHistory command);
+    LectureApplyHistoryInfo saveApplyHistory(CreateApplyHistory command);
 
     boolean existsAppliedLectureHistory(Long memberId, Long lectureId);
 

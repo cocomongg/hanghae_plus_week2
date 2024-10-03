@@ -72,7 +72,7 @@ public class LectureRepositoryImpl implements LectureRepository {
     }
 
     @Override
-    public void saveApplyHistory(CreateApplyHistory command) {
+    public LectureApplyHistoryInfo saveApplyHistory(CreateApplyHistory command) {
         LectureApplyHistory lectureApplyHistory = LectureApplyHistory.builder()
             .memberId(command.getMemberId())
             .lectureId(command.getLectureId())
@@ -82,7 +82,10 @@ public class LectureRepositoryImpl implements LectureRepository {
             .createdAt(LocalDateTime.now())
             .build();
 
-        lectureApplyHistoryJpaRepository.save(lectureApplyHistory);
+        LectureApplyHistory savedLectureApplyHistory =
+            lectureApplyHistoryJpaRepository.save(lectureApplyHistory);
+
+        return savedLectureApplyHistory.toLectureApplyHistoryInfo();
     }
 
     @Override
