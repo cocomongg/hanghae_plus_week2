@@ -30,7 +30,6 @@ public class LectureApplyHistoryEntity {
     @Column(name = "lecture_option_id", nullable = false)
     private Long lectureOptionId;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "apply_status", nullable = false)
     private boolean isSuccess;
 

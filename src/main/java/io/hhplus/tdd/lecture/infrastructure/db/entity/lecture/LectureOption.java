@@ -1,11 +1,12 @@
 package io.hhplus.tdd.lecture.infrastructure.db.entity.lecture;
 
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,9 +17,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "lecture_option")
 @Entity
-public class LectureOptionEntity {
+public class LectureOption {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +28,10 @@ public class LectureOptionEntity {
     @Column(name = "lecture_id", nullable = false)
     private Long lectureId;
 
-    @Column(name = "lecture_start_at", nullable = false)
-    private LocalDateTime applyStartAt;
+    @Column(name = "apply_start_date", nullable = false)
+    private LocalDate applyStartDate;
 
-    @Column(name = "lecture_end_at", nullable = false)
-    private LocalDateTime applyEndAt;
+    private LocalDate applyEndDate;
 
     @Column(name = "max_apply_count")
     private int maxApplyCount;
@@ -45,4 +44,15 @@ public class LectureOptionEntity {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public LectureOptionInfo toLectureOptionInfo() {
+        return LectureOptionInfo.builder()
+            .lectureOptionId(this.lectureOptionId)
+            .lectureId(this.lectureId)
+            .applyStartDate(this.applyStartDate)
+            .applyEndDate(this.applyEndDate)
+            .maxApplyCount(this.maxApplyCount)
+            .currentApplyCount(this.currentApplyCount)
+            .build();
+    }
 }
