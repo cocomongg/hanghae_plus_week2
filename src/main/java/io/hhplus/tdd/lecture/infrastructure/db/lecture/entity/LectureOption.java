@@ -43,6 +43,9 @@ public class LectureOption {
     @Column(name = "max_apply_count")
     private int maxApplyCount;
 
+    @Column(name = "current_apply_count", nullable = false)
+    private int currentApplyCount = 0;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
@@ -57,6 +60,7 @@ public class LectureOption {
             .lectureStartAt(this.lectureStartAt)
             .lectureEndAt(this.lectureEndAt)
             .maxApplyCount(this.maxApplyCount)
+            .currentApplyCount(this.currentApplyCount)
             .createdAt(this.createdAt)
             .updatedAt(this.updatedAt)
             .build();

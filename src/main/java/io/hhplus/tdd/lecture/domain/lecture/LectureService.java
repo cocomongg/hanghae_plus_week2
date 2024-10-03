@@ -1,6 +1,6 @@
 package io.hhplus.tdd.lecture.domain.lecture;
 
-import io.hhplus.tdd.lecture.domain.lecture.model.LectureCapacityInfo;
+import io.hhplus.tdd.lecture.domain.lecture.exception.LectureException;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LecturerInfo;
@@ -14,8 +14,11 @@ public class LectureService {
 
     private final LectureRepository lectureRepository;
 
-    public boolean existsLecture(Long lectureId) {
-        return lectureRepository.existsLecture(lectureId);
+    public void checkLectureExists(Long lectureId) {
+        boolean existsLecture = lectureRepository.existsLecture(lectureId);
+        if(existsLecture) {
+            throw LectureException.NOT_FOUND_LECTURE;
+        }
     }
 
     public List<LectureInfo> getLectures() {
@@ -28,9 +31,5 @@ public class LectureService {
 
     public List<LectureOptionInfo> getLectureOptions(Long lectureId) {
         return lectureRepository.getLectureOptions(lectureId);
-    }
-
-    public List<LectureCapacityInfo> getLectureCapacities(List<Long> lectureOptionIds) {
-        return lectureRepository.getLectureCapacities(lectureOptionIds);
     }
 }

@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.tuple;
 
 import io.hhplus.tdd.lecture.application.lecture.LectureDto.LectureItem;
 import io.hhplus.tdd.lecture.application.lecture.LectureDto.LectureOptionItem;
-import io.hhplus.tdd.lecture.domain.lecture.model.LectureCapacityInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureStatus;
@@ -88,6 +87,7 @@ class LectureMapperTest {
             .lectureStartAt(now)
             .lectureEndAt(now)
             .maxApplyCount(30)
+            .currentApplyCount(10)
             .createdAt(now)
             .build();
 
@@ -98,30 +98,16 @@ class LectureMapperTest {
             .lectureStartAt(now)
             .lectureEndAt(now)
             .maxApplyCount(30)
+            .currentApplyCount(20)
             .createdAt(now)
-            .build();
-
-        LectureCapacityInfo lectureCapacityInfo1 = LectureCapacityInfo.builder()
-            .lectureCapacityId(1L)
-            .lectureOptionId(1L)
-            .currentApplyCount(10)
-            .build();
-
-        LectureCapacityInfo lectureCapacityInfo2 = LectureCapacityInfo.builder()
-            .lectureCapacityId(2L)
-            .lectureOptionId(2L)
-            .currentApplyCount(10)
             .build();
 
         List<LectureOptionInfo> lectureOptionInfos =
             List.of(lectureOptionInfo1, lectureOptionInfo2);
 
-        Map<Long, LectureCapacityInfo> lectureCapacityMap =
-            Map.of(1L, lectureCapacityInfo1, 2L, lectureCapacityInfo2);
-
         // when
         List<LectureOptionItem> lectureOptionItems =
-            mapper.toLectureOptionItems(lectureOptionInfos, lectureCapacityMap);
+            mapper.toLectureOptionItems(lectureOptionInfos);
 
         // then
         assertThat(lectureOptionItems)
@@ -131,10 +117,10 @@ class LectureMapperTest {
                 LectureOptionItem::getLectureStartAt, LectureOptionItem::getLectureEndAt)
             .containsExactlyInAnyOrder(
                 tuple(lectureOptionInfo1.getLectureId(), lectureOptionInfo1.getLectureOptionId(),
-                    lectureCapacityInfo1.getCurrentApplyCount(), lectureOptionInfo1.getMaxApplyCount(),
+                    lectureOptionInfo1.getCurrentApplyCount(), lectureOptionInfo1.getMaxApplyCount(),
                     lectureOptionInfo1.getLectureStartAt(), lectureOptionInfo1.getLectureEndAt()),
                 tuple(lectureOptionInfo2.getLectureId(), lectureOptionInfo2.getLectureOptionId(),
-                    lectureCapacityInfo2.getCurrentApplyCount(), lectureOptionInfo2.getMaxApplyCount(),
+                    lectureOptionInfo2.getCurrentApplyCount(), lectureOptionInfo2.getMaxApplyCount(),
                     lectureOptionInfo2.getLectureStartAt(), lectureOptionInfo2.getLectureEndAt())
             );
     }

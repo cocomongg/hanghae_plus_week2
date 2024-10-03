@@ -21,7 +21,7 @@ class LectureOptionInfoTest {
                 .build();
 
             // when
-            boolean applicable = lectureOptionInfo.isApplicable(0);
+            boolean applicable = lectureOptionInfo.isApplicable();
 
             // then
             assertThat(applicable).isFalse();
@@ -33,10 +33,11 @@ class LectureOptionInfoTest {
             // given
             LectureOptionInfo lectureOptionInfo = LectureOptionInfo.builder()
                 .maxApplyCount(30)
+                .currentApplyCount(30)
                 .build();
 
             // when
-            boolean applicable = lectureOptionInfo.isApplicable(30);
+            boolean applicable = lectureOptionInfo.isApplicable();
 
             // then
             assertThat(applicable).isFalse();
@@ -48,11 +49,12 @@ class LectureOptionInfoTest {
             // given
             LectureOptionInfo lectureOptionInfo = LectureOptionInfo.builder()
                 .maxApplyCount(30)
+                .currentApplyCount(10)
                 .status(LectureStatus.APPLYING)
                 .build();
 
             // when
-            boolean applicable = lectureOptionInfo.isApplicable(10);
+            boolean applicable = lectureOptionInfo.isApplicable();
 
             // then
             assertThat(applicable).isTrue();

@@ -1,6 +1,5 @@
 package io.hhplus.tdd.lecture.application.lecture;
 
-import io.hhplus.tdd.lecture.domain.lecture.model.LectureCapacityInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LecturerInfo;
@@ -36,23 +35,17 @@ public class LectureMapper {
             }).collect(Collectors.toList());
     }
 
-    public List<LectureDto.LectureOptionItem> toLectureOptionItems(List<LectureOptionInfo> lectureOptionInfos,
-        Map<Long, LectureCapacityInfo> lectureCapacityMap) {
+    public List<LectureDto.LectureOptionItem> toLectureOptionItems(List<LectureOptionInfo> lectureOptionInfos) {
 
         return lectureOptionInfos.stream()
-            .map(lectureOptionInfo -> {
-                LectureCapacityInfo lectureCapacityInfo =
-                    lectureCapacityMap.get(lectureOptionInfo.getLectureOptionId());
-
-                return LectureDto.LectureOptionItem.builder()
-                    .lectureId(lectureOptionInfo.getLectureId())
-                    .lectureOptionId(lectureOptionInfo.getLectureOptionId())
-                    .currentApplyCount(lectureCapacityInfo.getCurrentApplyCount())
-                    .maxApplyCount(lectureOptionInfo.getMaxApplyCount())
-                    .lectureStartAt(lectureOptionInfo.getLectureStartAt())
-                    .lectureEndAt(lectureOptionInfo.getLectureEndAt())
-                    .build();
-            })
+            .map(lectureOptionInfo -> LectureDto.LectureOptionItem.builder()
+                .lectureId(lectureOptionInfo.getLectureId())
+                .lectureOptionId(lectureOptionInfo.getLectureOptionId())
+                .currentApplyCount(lectureOptionInfo.getCurrentApplyCount())
+                .maxApplyCount(lectureOptionInfo.getMaxApplyCount())
+                .lectureStartAt(lectureOptionInfo.getLectureStartAt())
+                .lectureEndAt(lectureOptionInfo.getLectureEndAt())
+                .build())
             .collect(Collectors.toList());
     }
 }

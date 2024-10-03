@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+import io.hhplus.tdd.lecture.domain.member.exception.MemberErrorCode;
+import io.hhplus.tdd.lecture.domain.member.exception.MemberException;
 import io.hhplus.tdd.lecture.domain.member.model.MemberInfo;
 import io.hhplus.tdd.lecture.infrastructure.db.member.entity.Member;
 import jakarta.persistence.EntityNotFoundException;
@@ -40,8 +42,8 @@ class MemberRepositoryImplTest {
 
             // when, then
             assertThatThrownBy(() -> memberRepositoryImpl.getMember(memberId))
-                .isInstanceOf(EntityNotFoundException.class)
-                .hasMessage("member not found");
+                .isInstanceOf(MemberException.class)
+                .hasMessage(MemberErrorCode.NOT_FOUND_MEMBER.getMessage());
         }
 
         @DisplayName("memberId에 해당하는 member를 memberInfo로 변환하여 반환한다.")

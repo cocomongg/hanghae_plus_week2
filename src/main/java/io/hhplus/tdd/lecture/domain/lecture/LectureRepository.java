@@ -1,6 +1,5 @@
 package io.hhplus.tdd.lecture.domain.lecture;
 
-import io.hhplus.tdd.lecture.domain.lecture.model.LectureCapacityInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LecturerInfo;
@@ -17,6 +16,4 @@ public interface LectureRepository {
     List<LecturerInfo> getLecturers(List<Long> lecturerIds);
 
     List<LectureOptionInfo> getLectureOptions(Long lectureId);
-
-    List<LectureCapacityInfo> getLectureCapacities(List<Long> lectureOptionIds);
 }

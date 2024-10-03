@@ -13,11 +13,12 @@ public class LectureOptionInfo {
     private LocalDateTime lectureStartAt;
     private LocalDateTime lectureEndAt;
     private int maxApplyCount;
+    private int currentApplyCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public boolean isApplicable(int currentApplyCount) {
+    public boolean isApplicable() {
         return LectureStatus.APPLYING.equals(this.status)
-            && this.maxApplyCount > currentApplyCount;
+            && this.maxApplyCount > this.currentApplyCount;
     }
 }
