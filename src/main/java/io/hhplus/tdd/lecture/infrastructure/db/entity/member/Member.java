@@ -1,11 +1,11 @@
 package io.hhplus.tdd.lecture.infrastructure.db.entity.member;
 
+import io.hhplus.tdd.lecture.domain.member.model.MemberInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,9 +16,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "member")
 @Entity
-public class MemberEntity {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -32,4 +31,11 @@ public class MemberEntity {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public MemberInfo toMemberInfo() {
+        return MemberInfo.builder()
+            .memberId(this.id)
+            .name(this.name)
+            .build();
+    }
 }

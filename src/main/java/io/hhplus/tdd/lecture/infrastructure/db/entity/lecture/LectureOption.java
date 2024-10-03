@@ -55,4 +55,8 @@ public class LectureOption {
             .currentApplyCount(this.currentApplyCount)
             .build();
     }
+
+    public void increaseCurrentApplyCount() {
+        this.currentApplyCount++;
+    }
 }
