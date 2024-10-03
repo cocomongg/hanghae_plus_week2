@@ -43,8 +43,9 @@ public class LectureFacade {
         lectureService.increaseCurrentApplyCapacity(lectureOption.getLectureOptionId());
 
         CreateApplyHistory createApplyHistory = CreateApplyHistory.builder()
-            .lectureOptionId(lectureOption.getLectureOptionId())
             .memberId(member.getMemberId())
+            .lectureId(lecture.getLectureId())
+            .lectureOptionId(lectureOption.getLectureOptionId())
             .isSuccess(true)
             .appliedAt(LocalDateTime.now())
             .build();

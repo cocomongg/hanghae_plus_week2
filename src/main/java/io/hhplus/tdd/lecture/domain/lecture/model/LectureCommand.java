@@ -9,6 +9,7 @@ public class LectureCommand {
     @Builder
     public static class CreateApplyHistory {
         private final Long memberId;
+        private final Long lectureId;
         private final Long lectureOptionId;
         private final boolean isSuccess;
         private final LocalDateTime appliedAt;

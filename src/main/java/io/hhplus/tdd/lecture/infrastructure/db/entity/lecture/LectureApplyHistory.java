@@ -24,6 +24,9 @@ public class LectureApplyHistory {
     @Column(name = "member_id", nullable = false)
     private Long memberId;
 
+    @Column(name = "lecture_id", nullable = false)
+    private Long lectureId;
+
     @Column(name = "lecture_option_id", nullable = false)
     private Long lectureOptionId;
 

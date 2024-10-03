@@ -74,6 +74,7 @@ public class LectureRepositoryImpl implements LectureRepository {
     public void saveApplyHistory(CreateApplyHistory command) {
         LectureApplyHistory lectureApplyHistory = LectureApplyHistory.builder()
             .memberId(command.getMemberId())
+            .lectureId(command.getLectureId())
             .lectureOptionId(command.getLectureOptionId())
             .isSuccess(command.isSuccess())
             .appliedAt(command.getAppliedAt())
