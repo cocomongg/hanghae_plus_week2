@@ -87,7 +87,6 @@ class LectureFacadeIntegrationTest {
 
             LectureOption lectureOption2 = lectureOptionJpaRepository.save(
                 LectureOption.builder()
-                    .lectureOptionId(1L)
                     .lectureId(lecture1.getLectureId())
                     .applyStartDate(date)
                     .applyEndDate(date.plusDays(1))
