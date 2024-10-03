@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
@@ -37,9 +38,10 @@ public class LectureFacade {
         return lectureMapper.toLecturesWithOption(lectures, lectureOptionMap);
     }
 
+    @Transactional
     public LectureInfo applyLecture(Long memberId, Long lectureOptionId) {
         MemberInfo member = memberService.getMember(memberId);
-        LectureOptionInfo lectureOption = lectureService.getLectureOption(lectureOptionId);
+        LectureOptionInfo lectureOption = lectureService.getLectureOptionWithLock(lectureOptionId);
         LectureInfo lecture = lectureService.getLecture(lectureOption.getLectureId());
         boolean existsAppliedLectureHistory =
             lectureService.existsAppliedLectureHistory(member.getMemberId(), lecture.getLectureId());
