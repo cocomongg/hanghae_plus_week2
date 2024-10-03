@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LectureApplyHistoryJpaRepository extends JpaRepository<LectureApplyHistory, Long> {
 
+    boolean existsByMemberIdAndLectureIdAndSuccessIsTrue(Long memberId, Long LectureId);
 }

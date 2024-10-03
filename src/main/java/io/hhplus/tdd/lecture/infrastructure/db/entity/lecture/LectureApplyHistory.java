@@ -30,8 +30,8 @@ public class LectureApplyHistory {
     @Column(name = "lecture_option_id", nullable = false)
     private Long lectureOptionId;
 
-    @Column(name = "apply_status", nullable = false)
-    private boolean isSuccess;
+    @Column(name = "success", nullable = false)
+    private boolean success;
 
     @Column(name = "applied_at", nullable = false)
     private LocalDateTime appliedAt;

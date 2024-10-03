@@ -38,4 +38,8 @@ public class LectureService {
     public void saveApplyHistory(CreateApplyHistory command) {
         lectureRepository.saveApplyHistory(command);
     }
+
+    public boolean existsAppliedLectureHistory(Long memberId, Long lectureId) {
+        return lectureRepository.existsAppliedLectureHistory(memberId, lectureId);
+    }
 }

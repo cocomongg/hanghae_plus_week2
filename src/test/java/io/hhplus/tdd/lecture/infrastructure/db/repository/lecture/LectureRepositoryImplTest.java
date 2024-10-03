@@ -31,6 +31,8 @@ class LectureRepositoryImplTest {
     private LectureJpaRepository lectureJpaRepository;
     @Mock
     private LectureOptionJpaRepository lectureOptionJpaRepository;
+    @Mock
+    private LectureApplyHistoryJpaRepository lectureApplyHistoryJpaRepository;
     @InjectMocks
     private LectureRepositoryImpl lectureRepositoryImpl;
 

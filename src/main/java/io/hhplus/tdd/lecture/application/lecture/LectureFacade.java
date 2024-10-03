@@ -2,6 +2,7 @@ package io.hhplus.tdd.lecture.application.lecture;
 
 import io.hhplus.tdd.lecture.domain.lecture.LectureMapper;
 import io.hhplus.tdd.lecture.domain.lecture.LectureService;
+import io.hhplus.tdd.lecture.domain.lecture.exception.LectureException;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureCommand.CreateApplyHistory;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
@@ -38,8 +39,19 @@ public class LectureFacade {
         MemberInfo member = memberService.getMember(memberId);
         LectureOptionInfo lectureOption = lectureService.getLectureOption(lectureOptionId);
         LectureInfo lecture = lectureService.getLecture(lectureOption.getLectureId());
+        boolean existsAppliedLectureHistory =
+            lectureService.existsAppliedLectureHistory(member.getMemberId(), lecture.getLectureId());
 
-        //todo: step3, step4 신청 가능 validation 체크
+        // 이미 신청한 강의인지 확인
+        if(existsAppliedLectureHistory) {
+            throw LectureException.ALREADY_APPLY_LECTURE;
+        }
+
+        // 현재 정원이 다 찬 강의인지 확인
+        if(lectureOption.getMaxApplyCount() - lectureOption.getCurrentApplyCount() <= 0) {
+            throw LectureException.EXCEED_MAX_CAPACITY;
+        }
+
         lectureService.increaseCurrentApplyCapacity(lectureOption.getLectureOptionId());
 
         CreateApplyHistory createApplyHistory = CreateApplyHistory.builder()

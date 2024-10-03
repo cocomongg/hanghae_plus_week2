@@ -12,6 +12,7 @@ import io.hhplus.tdd.lecture.domain.lecture.model.LectureWithOption;
 import io.hhplus.tdd.lecture.domain.member.exception.MemberErrorCode;
 import io.hhplus.tdd.lecture.domain.member.exception.MemberException;
 import io.hhplus.tdd.lecture.infrastructure.db.entity.lecture.Lecture;
+import io.hhplus.tdd.lecture.infrastructure.db.entity.lecture.LectureApplyHistory;
 import io.hhplus.tdd.lecture.infrastructure.db.entity.lecture.LectureOption;
 import io.hhplus.tdd.lecture.infrastructure.db.entity.member.Member;
 import io.hhplus.tdd.lecture.infrastructure.db.repository.lecture.LectureApplyHistoryJpaRepository;
@@ -184,35 +185,18 @@ class LectureFacadeIntegrationTest {
                 .hasMessage(LectureErrorCode.NOT_FOUND_LECTURE.getMessage());
         }
 
-        @DisplayName("특강을 성공적으로 신청하면 Capacity가 1 늘어난다")
+        @DisplayName("이미 신청한 강의이면 LectureException이 발생한다.")
         @Test
-        void should_IncreaseCapacity_When_ApplyLecture() {
+        void should_ThrowLectureException_When_AlreadyApply() {
             // given
-            Long memberId = 1L;
-            Long lectureOptionId = 1L;
-            int prevApplyCount = 10;
-            memberJpaRepository.save(
+            Member member = memberJpaRepository.save(
                 Member.builder()
-                    .id(memberId)
                     .name("name")
                     .createdAt(LocalDateTime.now())
                     .build());
 
-            lectureOptionJpaRepository.save(
-                LectureOption.builder()
-                    .lectureOptionId(lectureOptionId)
-                    .lectureId(1L)
-                    .applyStartDate(LocalDate.now())
-                    .applyEndDate(LocalDate.now().plusDays(1))
-                    .maxApplyCount(30)
-                    .currentApplyCount(prevApplyCount)
-                    .createdAt(LocalDateTime.now())
-                    .build()
-            );
-
-            lectureJpaRepository.save(
+            Lecture lecture = lectureJpaRepository.save(
                 Lecture.builder()
-                    .lectureId(1L)
                     .title("title1")
                     .description("desc1")
                     .lecturerName("name1")
@@ -221,16 +205,111 @@ class LectureFacadeIntegrationTest {
                     .build()
             );
 
+            LectureOption lectureOption = lectureOptionJpaRepository.save(
+                LectureOption.builder()
+                    .lectureId(lecture.getLectureId())
+                    .applyStartDate(LocalDate.now())
+                    .applyEndDate(LocalDate.now().plusDays(1))
+                    .maxApplyCount(30)
+                    .currentApplyCount(0)
+                    .createdAt(LocalDateTime.now())
+                    .build()
+            );
+
+            LectureApplyHistory lectureApplyHistory = lectureApplyHistoryJpaRepository.save(
+                LectureApplyHistory.builder()
+                    .memberId(member.getId())
+                    .lectureId(lecture.getLectureId())
+                    .lectureOptionId(lectureOption.getLectureOptionId())
+                    .success(true)
+                    .appliedAt(LocalDateTime.now())
+                    .createdAt(LocalDateTime.now())
+                    .build()
+            );
+
+            // when, then
+            assertThatThrownBy(() -> lectureFacade.applyLecture(member.getId(), lectureOption.getLectureOptionId()))
+                .isInstanceOf(LectureException.class)
+                .hasMessage(LectureErrorCode.ALREADY_APPLY_LECTURE.getMessage());
+        }
+
+        @DisplayName("신청한 강의가 정원이 이미 다 찼다면 LectureException이 발생한다.")
+        @Test
+        void should_ThrowLectureException_When_ExceedMaxCapacity() {
+            // given
+            Member member = memberJpaRepository.save(
+                Member.builder()
+                    .name("name")
+                    .createdAt(LocalDateTime.now())
+                    .build());
+
+            Lecture lecture = lectureJpaRepository.save(
+                Lecture.builder()
+                    .title("title1")
+                    .description("desc1")
+                    .lecturerName("name1")
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build()
+            );
+
+            LectureOption lectureOption = lectureOptionJpaRepository.save(
+                LectureOption.builder()
+                    .lectureId(lecture.getLectureId())
+                    .applyStartDate(LocalDate.now())
+                    .applyEndDate(LocalDate.now().plusDays(1))
+                    .maxApplyCount(30)
+                    .currentApplyCount(30)
+                    .createdAt(LocalDateTime.now())
+                    .build()
+            );
+
+            // when, then
+            assertThatThrownBy(() -> lectureFacade.applyLecture(member.getId(), lectureOption.getLectureOptionId()))
+                .isInstanceOf(LectureException.class)
+                .hasMessage(LectureErrorCode.EXCEED_MAX_CAPACITY.getMessage());
+        }
+
+        @DisplayName("특강을 성공적으로 신청하면 Capacity가 1 늘어난다")
+        @Test
+        void should_IncreaseCapacity_When_ApplyLecture() {
+            // given
+            int prevApplyCount = 10;
+            Member member = memberJpaRepository.save(
+                Member.builder()
+                    .name("name")
+                    .createdAt(LocalDateTime.now())
+                    .build());
+
+            Lecture lecture = lectureJpaRepository.save(
+                Lecture.builder()
+                    .title("title1")
+                    .description("desc1")
+                    .lecturerName("name1")
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build());
+
+            LectureOption lectureOption = lectureOptionJpaRepository.save(
+                LectureOption.builder()
+                    .lectureId(lecture.getLectureId())
+                    .applyStartDate(LocalDate.now())
+                    .applyEndDate(LocalDate.now().plusDays(1))
+                    .maxApplyCount(30)
+                    .currentApplyCount(prevApplyCount)
+                    .createdAt(LocalDateTime.now())
+                    .build());
+
             // when
-            lectureFacade.applyLecture(memberId, lectureOptionId);
+            lectureFacade.applyLecture(member.getId(), lectureOption.getLectureOptionId());
 
             // then
             Optional<LectureOption> lectureOptionOptional =
-                lectureOptionJpaRepository.findById(lectureOptionId);
+                lectureOptionJpaRepository.findById(lectureOption.getLectureOptionId());
             assertThat(lectureOptionOptional).isPresent();
 
-            LectureOption lectureOption = lectureOptionOptional.get();
-            assertThat(lectureOption.getCurrentApplyCount()).isEqualTo(prevApplyCount + 1);
+            LectureOption getLectureOption = lectureOptionOptional.get();
+            assertThat(getLectureOption.getCurrentApplyCount()).isEqualTo(prevApplyCount + 1);
         }
     }
 }

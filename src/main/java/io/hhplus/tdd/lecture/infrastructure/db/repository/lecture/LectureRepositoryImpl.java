@@ -76,11 +76,17 @@ public class LectureRepositoryImpl implements LectureRepository {
             .memberId(command.getMemberId())
             .lectureId(command.getLectureId())
             .lectureOptionId(command.getLectureOptionId())
-            .isSuccess(command.isSuccess())
+            .success(command.isSuccess())
             .appliedAt(command.getAppliedAt())
             .createdAt(LocalDateTime.now())
             .build();
 
         lectureApplyHistoryJpaRepository.save(lectureApplyHistory);
+    }
+
+    @Override
+    public boolean existsAppliedLectureHistory(Long memberId, Long lectureId) {
+        return lectureApplyHistoryJpaRepository
+            .existsByMemberIdAndLectureIdAndSuccessIsTrue(memberId, lectureId);
     }
 }
