@@ -40,12 +40,6 @@ public class LectureOption {
     @Column(name = "lecture_end_at", nullable = false)
     private LocalDateTime lectureEndAt;
 
-    @Column(name = "apply_start_at")
-    private LocalDateTime applyBeginAt;
-
-    @Column(name = "apply_end_at")
-    private LocalDateTime applyEndAt;
-
     @Column(name = "max_apply_count")
     private int maxApplyCount;
 
@@ -62,8 +56,6 @@ public class LectureOption {
             .status(this.status)
             .lectureStartAt(this.lectureStartAt)
             .lectureEndAt(this.lectureEndAt)
-            .applyBeginAt(this.applyBeginAt)
-            .applyEndAt(this.applyEndAt)
             .maxApplyCount(this.maxApplyCount)
             .createdAt(this.createdAt)
             .updatedAt(this.updatedAt)

@@ -3,6 +3,7 @@ package io.hhplus.tdd.lecture.interfaces.api.lecture;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class LectureRequest {
 
@@ -15,10 +16,10 @@ public class LectureRequest {
     }
 
     @Getter
+    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class GetApplicableLectures {
-        private Long memberId;
+    public static class GetApplicableLectureOptions {
         private Long lectureId;
     }
 

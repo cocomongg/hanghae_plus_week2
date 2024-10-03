@@ -1,11 +1,12 @@
 package io.hhplus.tdd.lecture.interfaces.api.lecture;
 
 import io.hhplus.tdd.lecture.application.lecture.LectureDto.LectureItem;
+import io.hhplus.tdd.lecture.application.lecture.LectureDto.LectureOptionItem;
 import io.hhplus.tdd.lecture.application.lecture.LectureFacade;
 import io.hhplus.tdd.lecture.interfaces.api.common.response.ApiResponse;
 import io.hhplus.tdd.lecture.interfaces.api.common.response.PageResponse;
 import io.hhplus.tdd.lecture.interfaces.api.lecture.LectureRequest.ApplyLecture;
-import io.hhplus.tdd.lecture.interfaces.api.lecture.LectureResponse.GetApplicableLectures;
+import io.hhplus.tdd.lecture.interfaces.api.lecture.LectureRequest.GetApplicableLectureOptions;
 import io.hhplus.tdd.lecture.interfaces.api.lecture.LectureResponse.GetLectureApplyHistories;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,21 +23,21 @@ public class LectureController {
 
     private final LectureFacade lectureFacade;
 
+    // 1. 특강 목록 전체 조회
     @GetMapping("")
     public ApiResponse<List<LectureItem>> getLectures() {
         return ApiResponse.OK(lectureFacade.getLectures());
     }
 
-    @GetMapping("/options/applicable")
-    public ApiResponse<PageResponse<GetApplicableLectures>> getApplicableLectures(LectureRequest.GetApplicableLectures req) {
-        PageResponse<GetApplicableLectures> getApplicableLecturesPageResponse = new PageResponse<>(
-            0, 0, 0, List.of(new LectureResponse.GetApplicableLectures()));
-
-        return ApiResponse.OK(getApplicableLecturesPageResponse);
+    // 2. 선택한 특강의 날짜별로 신청가능한 목록 조회
+    @GetMapping("/options")
+    public ApiResponse<List<LectureOptionItem>> getApplicableLectureOptions(GetApplicableLectureOptions req) {
+        return ApiResponse.OK(lectureFacade.getApplicableLectureOptions(req.getLectureId()));
     }
 
     @GetMapping("/apply-histories")
-    public ApiResponse<PageResponse<GetLectureApplyHistories>> getLectureApplyHistories(LectureRequest.GetApplicableLectures req) {
+    public ApiResponse<PageResponse<GetLectureApplyHistories>> getLectureApplyHistories(
+        GetApplicableLectureOptions req) {
         PageResponse<GetLectureApplyHistories> getLectureApplyHistoriesPageResponse = new PageResponse<>(
             0, 0, 0, List.of(new LectureResponse.GetLectureApplyHistories()));
 

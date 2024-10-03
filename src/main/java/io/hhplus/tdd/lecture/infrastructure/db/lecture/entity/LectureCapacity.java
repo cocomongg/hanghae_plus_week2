@@ -1,5 +1,6 @@
 package io.hhplus.tdd.lecture.infrastructure.db.lecture.entity;
 
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureCapacityInfo;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,9 +11,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class LectureCapacity {
 
@@ -32,4 +39,12 @@ public class LectureCapacity {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public LectureCapacityInfo toLectureCapacityInfo() {
+        return LectureCapacityInfo.builder()
+            .lectureCapacityId(this.lectureCapacityId)
+            .lectureOptionId(this.lectureOptionId)
+            .currentApplyCount(this.currentApplyCount)
+            .build();
+    }
 }

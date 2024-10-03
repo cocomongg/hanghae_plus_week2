@@ -1,7 +1,6 @@
 package io.hhplus.tdd.lecture.domain.lecture.model;
 
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,9 +12,12 @@ public class LectureOptionInfo {
     private LectureStatus status;
     private LocalDateTime lectureStartAt;
     private LocalDateTime lectureEndAt;
-    private LocalDateTime applyBeginAt;
-    private LocalDateTime applyEndAt;
     private int maxApplyCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public boolean isApplicable(int currentApplyCount) {
+        return LectureStatus.APPLYING.equals(this.status)
+            && this.maxApplyCount > currentApplyCount;
+    }
 }

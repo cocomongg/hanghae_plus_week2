@@ -1,10 +1,15 @@
 package io.hhplus.tdd.lecture.infrastructure.db.lecture.repository.impl;
 
 import io.hhplus.tdd.lecture.domain.lecture.LectureRepository;
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureCapacityInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LecturerInfo;
 import io.hhplus.tdd.lecture.infrastructure.db.lecture.entity.Lecture;
+import io.hhplus.tdd.lecture.infrastructure.db.lecture.entity.LectureCapacity;
+import io.hhplus.tdd.lecture.infrastructure.db.lecture.entity.LectureOption;
 import io.hhplus.tdd.lecture.infrastructure.db.lecture.entity.Lecturer;
+import io.hhplus.tdd.lecture.infrastructure.db.lecture.repository.LectureCapacityJpaRepository;
 import io.hhplus.tdd.lecture.infrastructure.db.lecture.repository.LectureJpaRepository;
 import io.hhplus.tdd.lecture.infrastructure.db.lecture.repository.LectureOptionJpaRepository;
 import io.hhplus.tdd.lecture.infrastructure.db.lecture.repository.LecturerJpaRepository;
@@ -20,6 +25,12 @@ public class LectureRepositoryImpl implements LectureRepository {
     private final LectureJpaRepository lectureJpaRepository;
     private final LecturerJpaRepository lecturerJpaRepository;
     private final LectureOptionJpaRepository lectureOptionJpaRepository;
+    private final LectureCapacityJpaRepository lectureCapacityJpaRepository;
+
+    @Override
+    public boolean existsLecture(Long lectureId) {
+        return lectureJpaRepository.existsById(lectureId);
+    }
 
     @Override
     public List<LectureInfo> getLectures() {
@@ -36,6 +47,26 @@ public class LectureRepositoryImpl implements LectureRepository {
 
         return lecturers.stream()
             .map(Lecturer::toLecturerInfo)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LectureOptionInfo> getLectureOptions(Long lectureId) {
+        List<LectureOption> lectureOptions =
+            lectureOptionJpaRepository.findAllByLectureId(lectureId);
+
+        return lectureOptions.stream()
+            .map(LectureOption::toLectureOptionInfo)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LectureCapacityInfo> getLectureCapacities(List<Long> lectureOptionIds) {
+        List<LectureCapacity> lectureCapacities =
+            lectureCapacityJpaRepository.findAllByLectureOptionIdIn(lectureOptionIds);
+
+        return lectureCapacities.stream()
+            .map(LectureCapacity::toLectureCapacityInfo)
             .collect(Collectors.toList());
     }
 }

@@ -4,10 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.Mockito.when;
 
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureCapacityInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureStatus;
 import io.hhplus.tdd.lecture.domain.lecture.model.LecturerInfo;
 import io.hhplus.tdd.lecture.infrastructure.db.lecture.entity.Lecture;
+import io.hhplus.tdd.lecture.infrastructure.db.lecture.entity.LectureCapacity;
+import io.hhplus.tdd.lecture.infrastructure.db.lecture.entity.LectureOption;
 import io.hhplus.tdd.lecture.infrastructure.db.lecture.entity.Lecturer;
+import io.hhplus.tdd.lecture.infrastructure.db.lecture.repository.LectureCapacityJpaRepository;
 import io.hhplus.tdd.lecture.infrastructure.db.lecture.repository.LectureJpaRepository;
 import io.hhplus.tdd.lecture.infrastructure.db.lecture.repository.LectureOptionJpaRepository;
 import io.hhplus.tdd.lecture.infrastructure.db.lecture.repository.LecturerJpaRepository;
@@ -32,6 +38,9 @@ class LectureRepositoryImplTest {
 
     @Mock
     private LectureOptionJpaRepository lectureOptionJpaRepository;
+
+    @Mock
+    private LectureCapacityJpaRepository lectureCapacityJpaRepository;
 
     @InjectMocks
     private LectureRepositoryImpl lectureRepositoryImpl;
@@ -117,4 +126,97 @@ class LectureRepositoryImplTest {
         }
     }
 
+    @DisplayName("LectureOption List 조회 테스트")
+    @Nested
+    class GetLectureOptionsTest {
+        @DisplayName("조회된 lectureOption 목록을 LectureOptionInfo 목록으로 변환하여 반환한다.")
+        @Test
+        void should_ReturnLectureInfoList_When_Found() {
+            // given
+            Long lectureId = 1L;
+            LocalDateTime now = LocalDateTime.now();
+            LectureOption lectureOption1 = LectureOption.builder()
+                .lectureOptionId(1L)
+                .lectureId(lectureId)
+                .status(LectureStatus.START)
+                .lectureStartAt(now)
+                .lectureEndAt(now)
+                .maxApplyCount(30)
+                .createdAt(now)
+                .build();
+
+            LectureOption lectureOption2 = LectureOption.builder()
+                .lectureOptionId(2L)
+                .lectureId(lectureId)
+                .status(LectureStatus.END)
+                .lectureStartAt(now)
+                .lectureEndAt(now)
+                .maxApplyCount(30)
+                .createdAt(now)
+                .build();
+
+            when(lectureOptionJpaRepository.findAllByLectureId(lectureId))
+                .thenReturn(List.of(lectureOption1, lectureOption2));
+
+            // when
+            List<LectureOptionInfo> lectureOptionInfos = lectureRepositoryImpl.getLectureOptions(lectureId);
+
+            // then
+            assertThat(lectureOptionInfos).hasSize(2)
+                .extracting(LectureOptionInfo::getLectureId, LectureOptionInfo::getLectureId,
+                    LectureOptionInfo::getStatus, LectureOptionInfo::getLectureStartAt,
+                    LectureOptionInfo::getLectureEndAt, LectureOptionInfo::getMaxApplyCount,
+                    LectureOptionInfo::getCreatedAt)
+                .containsExactlyInAnyOrder(
+                    tuple(lectureOption1.getLectureId(), lectureOption1.getLectureId(),
+                        lectureOption1.getStatus(), lectureOption1.getLectureStartAt(),
+                        lectureOption1.getLectureEndAt(), lectureOption1.getMaxApplyCount(),
+                        lectureOption1.getCreatedAt()),
+                    tuple(lectureOption2.getLectureId(), lectureOption2.getLectureId(),
+                        lectureOption2.getStatus(), lectureOption2.getLectureStartAt(),
+                        lectureOption2.getLectureEndAt(), lectureOption2.getMaxApplyCount(),
+                        lectureOption2.getCreatedAt())
+                );
+        }
+    }
+
+    @DisplayName("LectureCapacity List 조회 테스트")
+    @Nested
+    class GetLectureCapacitiesTest {
+        @DisplayName("조회된 lectureCapacity 목록을 LectureCapacityInfo 목록으로 변환하여 반환한다.")
+        @Test
+        void should_ReturnLectureInfoList_When_Found() {
+            // given
+            LectureCapacity lectureCapacity1 = LectureCapacity.builder()
+                .lectureCapacityId(1L)
+                .lectureOptionId(1L)
+                .currentApplyCount(10)
+                .build();
+
+            LectureCapacity lectureCapacity2 = LectureCapacity.builder()
+                .lectureCapacityId(2L)
+                .lectureOptionId(2L)
+                .currentApplyCount(15)
+                .build();
+
+            List<Long> lectureOptionIds = List.of(1L, 2L);
+            when(lectureCapacityJpaRepository.findAllByLectureOptionIdIn(lectureOptionIds))
+                .thenReturn(List.of(lectureCapacity1, lectureCapacity2));
+
+            // when
+            List<LectureCapacityInfo> lectureCapacityInfos =
+                lectureRepositoryImpl.getLectureCapacities(lectureOptionIds);
+
+            // then
+            assertThat(lectureCapacityInfos).hasSize(2)
+                .extracting(LectureCapacityInfo::getLectureCapacityId, LectureCapacityInfo::getLectureOptionId,
+                    LectureCapacityInfo::getCurrentApplyCount)
+                .containsExactlyInAnyOrder(
+                    tuple(lectureCapacity1.getLectureCapacityId(), lectureCapacity1.getLectureOptionId(),
+                        lectureCapacity1.getCurrentApplyCount()),
+                    tuple(lectureCapacity2.getLectureCapacityId(), lectureCapacity2.getLectureOptionId(),
+                        lectureCapacity2.getCurrentApplyCount())
+                );
+        }
+    }
 }

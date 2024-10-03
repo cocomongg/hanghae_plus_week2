@@ -16,4 +16,15 @@ public class LectureDto {
         private String lecturerName;
         private LocalDateTime createdAt;
     }
+
+    @Getter
+    @Builder
+    public static class LectureOptionItem {
+        private Long lectureId;
+        private Long lectureOptionId;
+        private int currentApplyCount;
+        private int maxApplyCount;
+        private LocalDateTime lectureStartAt;
+        private LocalDateTime lectureEndAt;
+    }
 }
