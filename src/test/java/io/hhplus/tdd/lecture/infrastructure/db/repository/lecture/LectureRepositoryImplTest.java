@@ -7,9 +7,11 @@ import static org.mockito.Mockito.when;
 
 import io.hhplus.tdd.lecture.domain.lecture.exception.LectureErrorCode;
 import io.hhplus.tdd.lecture.domain.lecture.exception.LectureException;
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureApplyHistoryInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
 import io.hhplus.tdd.lecture.infrastructure.db.entity.lecture.Lecture;
+import io.hhplus.tdd.lecture.infrastructure.db.entity.lecture.LectureApplyHistory;
 import io.hhplus.tdd.lecture.infrastructure.db.entity.lecture.LectureOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -275,6 +277,68 @@ class LectureRepositoryImplTest {
             // then
             assertThat(lectureOptionInfo.getLectureOptionId()).isEqualTo(lectureOption.getLectureOptionId());
             assertThat(lectureOptionInfo.getCurrentApplyCount()).isEqualTo(prevApplyCount + 1);
+        }
+    }
+
+    @DisplayName("memberId에 해당하는 특강신청 성공 내역 조회 테스트")
+    @Nested
+    class GetAppliedLectureHistoriesTest {
+        @DisplayName("memberId를 통해 조회한 LectureApplyHistory목록을 LectureApplyHistoryInfo 목록으로 변환하여 반환한다,.")
+        @Test
+        void should_ReturnLectureApplyHistoryInfoList_When_FindByMemberId() {
+            // given
+            Long memberId = 1L;
+
+            LectureApplyHistory history1 = LectureApplyHistory.builder()
+                .memberId(memberId)
+                .lectureId(1L)
+                .lectureOptionId(1L)
+                .success(true)
+                .appliedAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+            LectureApplyHistory history2 = LectureApplyHistory.builder()
+                .memberId(memberId)
+                .lectureId(2L)
+                .lectureOptionId(2L)
+                .success(true)
+                .appliedAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+            when(lectureApplyHistoryJpaRepository.findAllByMemberIdAndSuccessIsTrue(memberId))
+                .thenReturn(List.of(history1, history2));
+
+            // when
+            List<LectureApplyHistoryInfo> result =
+                lectureRepositoryImpl.getAppliedLectureHistories(memberId);
+
+            // then
+            assertThat(result)
+                .hasSize(2)
+                .extracting(
+                    LectureApplyHistoryInfo::getLectureApplyHistoryId,
+                    LectureApplyHistoryInfo::getMemberId,
+                    LectureApplyHistoryInfo::getLectureId,
+                    LectureApplyHistoryInfo::getLectureOptionId,
+                    LectureApplyHistoryInfo::isSuccess,
+                    LectureApplyHistoryInfo::getAppliedAt)
+                .containsExactlyInAnyOrder(
+                    tuple(
+                        history1.getLectureApplyHistoryId(),
+                        history1.getMemberId(),
+                        history1.getLectureId(),
+                        history1.getLectureOptionId(),
+                        history1.isSuccess(),
+                        history1.getAppliedAt()),
+                    tuple(
+                        history2.getLectureApplyHistoryId(),
+                        history2.getMemberId(),
+                        history2.getLectureId(),
+                        history2.getLectureOptionId(),
+                        history2.isSuccess(),
+                        history2.getAppliedAt()));
         }
     }
 }

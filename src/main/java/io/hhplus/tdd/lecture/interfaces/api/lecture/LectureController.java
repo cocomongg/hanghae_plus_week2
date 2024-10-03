@@ -1,11 +1,13 @@
 package io.hhplus.tdd.lecture.interfaces.api.lecture;
 
 import io.hhplus.tdd.lecture.application.lecture.LectureFacade;
+import io.hhplus.tdd.lecture.domain.lecture.model.ApplyHistoryWithLecture;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureWithOption;
 import io.hhplus.tdd.lecture.interfaces.api.common.response.ApiResponse;
 import io.hhplus.tdd.lecture.interfaces.api.lecture.LectureRequest.ApplyLecture;
 import io.hhplus.tdd.lecture.interfaces.api.lecture.LectureRequest.GetApplicableLectures;
+import io.hhplus.tdd.lecture.interfaces.api.lecture.LectureRequest.GetAppliedLectureHistories;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -35,4 +37,9 @@ public class LectureController {
         return ApiResponse.OK(lectureFacade.applyLecture(req.getMemberId(), req.getLectureOptionId()));
     }
 
+    // 3. 특강 신청 완료 목록 조회 API
+    @GetMapping("/apply/histories")
+    public ApiResponse<List<ApplyHistoryWithLecture>> getAppliedLectureHistories(@Valid @ModelAttribute GetAppliedLectureHistories req) {
+        return ApiResponse.OK(lectureFacade.getAppliedLectureHistories(req.getMemberId()));
+    }
 }

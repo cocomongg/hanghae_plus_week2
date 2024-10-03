@@ -2,6 +2,7 @@ package io.hhplus.tdd.lecture.infrastructure.db.repository.lecture;
 
 import io.hhplus.tdd.lecture.domain.lecture.LectureRepository;
 import io.hhplus.tdd.lecture.domain.lecture.exception.LectureException;
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureApplyHistoryInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureCommand.CreateApplyHistory;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
@@ -88,5 +89,15 @@ public class LectureRepositoryImpl implements LectureRepository {
     public boolean existsAppliedLectureHistory(Long memberId, Long lectureId) {
         return lectureApplyHistoryJpaRepository
             .existsByMemberIdAndLectureIdAndSuccessIsTrue(memberId, lectureId);
+    }
+
+    @Override
+    public List<LectureApplyHistoryInfo> getAppliedLectureHistories(Long memberId) {
+        List<LectureApplyHistory> lectureApplyHistories =
+            lectureApplyHistoryJpaRepository.findAllByMemberIdAndSuccessIsTrue(memberId);
+
+        return lectureApplyHistories.stream()
+            .map(LectureApplyHistory::toLectureApplyHistoryInfo)
+            .collect(Collectors.toList());
     }
 }

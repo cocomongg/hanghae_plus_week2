@@ -3,6 +3,8 @@ package io.hhplus.tdd.lecture.application.lecture;
 import io.hhplus.tdd.lecture.domain.lecture.LectureMapper;
 import io.hhplus.tdd.lecture.domain.lecture.LectureService;
 import io.hhplus.tdd.lecture.domain.lecture.exception.LectureException;
+import io.hhplus.tdd.lecture.domain.lecture.model.ApplyHistoryWithLecture;
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureApplyHistoryInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureCommand.CreateApplyHistory;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
@@ -66,4 +68,16 @@ public class LectureFacade {
         return lecture;
     }
 
+    public List<ApplyHistoryWithLecture> getAppliedLectureHistories(Long memberId) {
+        MemberInfo member = memberService.getMember(memberId);
+        List<LectureApplyHistoryInfo> appliedLectureHistories =
+            lectureService.getAppliedLectureHistories(member.getMemberId());
+
+        List<Long> lectureIds = appliedLectureHistories.stream()
+            .map(LectureApplyHistoryInfo::getLectureId)
+            .toList();
+        List<LectureInfo> lectures = lectureService.getLectures(lectureIds);
+
+        return lectureMapper.toApplyHistoriesWithLecture(appliedLectureHistories, lectures);
+    }
 }

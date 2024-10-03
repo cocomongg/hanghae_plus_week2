@@ -1,5 +1,6 @@
 package io.hhplus.tdd.lecture.domain.lecture;
 
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureApplyHistoryInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureCommand.CreateApplyHistory;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
@@ -41,5 +42,9 @@ public class LectureService {
 
     public boolean existsAppliedLectureHistory(Long memberId, Long lectureId) {
         return lectureRepository.existsAppliedLectureHistory(memberId, lectureId);
+    }
+
+    public List<LectureApplyHistoryInfo> getAppliedLectureHistories(Long memberId) {
+        return lectureRepository.getAppliedLectureHistories(memberId);
     }
 }

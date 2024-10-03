@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.tuple;
 
 import io.hhplus.tdd.lecture.domain.lecture.exception.LectureErrorCode;
 import io.hhplus.tdd.lecture.domain.lecture.exception.LectureException;
+import io.hhplus.tdd.lecture.domain.lecture.model.ApplyHistoryWithLecture;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureWithOption;
@@ -310,6 +311,106 @@ class LectureFacadeIntegrationTest {
 
             LectureOption getLectureOption = lectureOptionOptional.get();
             assertThat(getLectureOption.getCurrentApplyCount()).isEqualTo(prevApplyCount + 1);
+        }
+    }
+    
+    @DisplayName("특강 신청 내역 조회 테스트")
+    @Nested
+    class getAppliedLectureHistories {
+        @DisplayName("memberId에 해당하는 member가 없으면 MemberException이 발생한다.")
+        @Test
+        void should_ThrowMemberException_When_NotFoundMember() {
+            // given
+            Long memberId = 0L;
+            
+            // when, then
+            assertThatThrownBy(() -> lectureFacade.getAppliedLectureHistories(memberId))
+                .isInstanceOf(MemberException.class)
+                .hasMessage(MemberErrorCode.NOT_FOUND_MEMBER.getMessage());
+        }
+        
+        @DisplayName("memberId에 해당하는 특강 신청 내역이 있으면 신청한 특강에 대한 목록을 반환한다.")
+        @Test
+        void should_ReturnHistoryList_When_HistoryExits() {
+            // given
+            LocalDateTime now = LocalDateTime.now();
+            Member member = memberJpaRepository.save(
+                Member.builder()
+                    .name("name")
+                    .createdAt(LocalDateTime.now())
+                    .build()
+            );
+
+            Lecture lecture1 = lectureJpaRepository.save(Lecture.builder()
+                .title("title1")
+                .description("desc1")
+                .lecturerName("name1")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
+
+            Lecture lecture2 = lectureJpaRepository.save(Lecture.builder()
+                .title("title2")
+                .description("desc2")
+                .lecturerName("name2")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build());
+
+            LectureApplyHistory lectureApplyHistory1 = lectureApplyHistoryJpaRepository.save(
+                LectureApplyHistory.builder()
+                    .memberId(member.getId())
+                    .lectureId(lecture1.getLectureId())
+                    .lectureOptionId(1L)
+                    .success(true)
+                    .appliedAt(now)
+                    .createdAt(now)
+                    .build());
+
+            LectureApplyHistory lectureApplyHistory2 = lectureApplyHistoryJpaRepository.save(
+                LectureApplyHistory.builder()
+                    .memberId(member.getId())
+                    .lectureId(lecture2.getLectureId())
+                    .lectureOptionId(1L)
+                    .success(true)
+                    .appliedAt(now)
+                    .createdAt(now)
+                    .build());
+
+            // when
+            List<ApplyHistoryWithLecture> result = lectureFacade.getAppliedLectureHistories(
+                member.getId());
+
+            // then
+            assertThat(result).hasSize(2)
+                .extracting(
+                    ApplyHistoryWithLecture::getLectureApplyHistoryId,
+                    ApplyHistoryWithLecture::getLectureId,
+                    ApplyHistoryWithLecture::getLectureOptionId,
+                    ApplyHistoryWithLecture::getLectureTitle,
+                    ApplyHistoryWithLecture::getLectureDescription,
+                    ApplyHistoryWithLecture::getLecturerName,
+                    ApplyHistoryWithLecture::getAppliedAt)
+                .containsExactlyInAnyOrder(
+                    tuple(
+                        lectureApplyHistory1.getLectureApplyHistoryId(),
+                        lecture1.getLectureId(),
+                        lectureApplyHistory1.getLectureOptionId(),
+                        lecture1.getTitle(),
+                        lecture1.getDescription(),
+                        lecture1.getLecturerName(),
+                        lectureApplyHistory1.getAppliedAt()
+                    ),
+                    tuple(
+                        lectureApplyHistory2.getLectureApplyHistoryId(),
+                        lecture2.getLectureId(),
+                        lectureApplyHistory2.getLectureOptionId(),
+                        lecture2.getTitle(),
+                        lecture2.getDescription(),
+                        lecture2.getLecturerName(),
+                        lectureApplyHistory2.getAppliedAt()
+                    )
+                );
         }
     }
 }

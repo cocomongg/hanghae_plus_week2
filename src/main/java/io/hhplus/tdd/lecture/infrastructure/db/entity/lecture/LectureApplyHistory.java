@@ -1,5 +1,6 @@
 package io.hhplus.tdd.lecture.infrastructure.db.entity.lecture;
 
+import io.hhplus.tdd.lecture.domain.lecture.model.LectureApplyHistoryInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,8 +10,10 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,4 +41,15 @@ public class LectureApplyHistory {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    public LectureApplyHistoryInfo toLectureApplyHistoryInfo() {
+        return LectureApplyHistoryInfo.builder()
+            .lectureApplyHistoryId(this.lectureApplyHistoryId)
+            .memberId(this.memberId)
+            .lectureId(this.lectureId)
+            .lectureOptionId(this.lectureOptionId)
+            .success(this.success)
+            .appliedAt(this.appliedAt)
+            .build();
+    }
 }

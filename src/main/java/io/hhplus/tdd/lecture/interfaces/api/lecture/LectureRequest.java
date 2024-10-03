@@ -32,4 +32,14 @@ public class LectureRequest {
         private Long lectureOptionId;
     }
 
+    @Setter
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetAppliedLectureHistories {
+        @NotNull
+        @Min(1)
+        private Long memberId;
+    }
+
 }
