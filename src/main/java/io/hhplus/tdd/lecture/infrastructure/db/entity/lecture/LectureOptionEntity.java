@@ -14,29 +14,35 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "lecture")
+@NoArgsConstructor
+@Table(name = "lecture_option")
 @Entity
-public class LectureEntity {
+public class LectureOptionEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lecture_id")
+    @Column(name = "lecture_option_id")
+    private Long lectureOptionId;
+
+    @Column(name = "lecture_id", nullable = false)
     private Long lectureId;
 
-    @Column(name = "title", nullable = false)
-    private String title;
+    @Column(name = "lecture_start_at", nullable = false)
+    private LocalDateTime applyStartAt;
 
-    @Column(name = "description", nullable = false)
-    private String description;
+    @Column(name = "lecture_end_at", nullable = false)
+    private LocalDateTime applyEndAt;
 
-    @Column(name = "lecturer_name", nullable = false)
-    private Long lecturerName;
+    @Column(name = "max_apply_count")
+    private int maxApplyCount;
+
+    @Column(name = "current_apply_count", nullable = false)
+    private int currentApplyCount = 0;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
 }
