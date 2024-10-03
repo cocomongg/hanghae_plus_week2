@@ -2,14 +2,12 @@ package io.hhplus.tdd.lecture.infrastructure.db.member.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import io.hhplus.tdd.lecture.domain.member.exception.MemberErrorCode;
 import io.hhplus.tdd.lecture.domain.member.exception.MemberException;
 import io.hhplus.tdd.lecture.domain.member.model.MemberInfo;
 import io.hhplus.tdd.lecture.infrastructure.db.member.entity.Member;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -31,9 +29,9 @@ class MemberRepositoryImplTest {
     @DisplayName("member 조회 테스트")
     @Nested
     class GetMemberTest {
-        @DisplayName("memberId에 해당하는 member가 없으면 EntityNotFoundException이 발생한다.")
+        @DisplayName("memberId에 해당하는 member가 없으면 MemberException이 발생한다.")
         @Test
-        void should_ThrowEntityNotFoundException_When_NotFoundByMemberId() {
+        void should_ThrowMemberException_When_NotFoundByMemberId() {
             // given
             Long memberId = 0L;
 

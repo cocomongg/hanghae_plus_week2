@@ -35,9 +35,9 @@ class MemberServiceIntegrationTest {
     @DisplayName("member 조회 테스트")
     @Nested
     class GetMemberTest {
-        @DisplayName("member가 존재하지 않을 때 EntityNotFoundException이 발생한다.")
+        @DisplayName("member가 존재하지 않을 때 MemberException이 발생한다.")
         @Test
-        void should_ThrowEntityNotFoundException_When_MemberNotFound() {
+        void should_ThrowMemberException_When_MemberNotFound() {
             // given
             Long memberId = 0L;
             

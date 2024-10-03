@@ -75,9 +75,9 @@ class LectureMapperTest {
             );
     }
 
-    @DisplayName("입력받은 LectureOption목록과 LectureCapacity Map을 LectureOptionItem 목록으로 변환한다.")
+    @DisplayName("입력받은 LectureOption목록을 LectureOptionItem 목록으로 변환한다.")
     @Test
-    void should_ReturnLectureOptionItemList_When_InputLectureOptionsAndLectureCapacityMap() {
+    void should_ReturnLectureOptionItemList_When_InputLectureOptions() {
         // given
         LocalDateTime now = LocalDateTime.now();
         LectureOptionInfo lectureOptionInfo1 = LectureOptionInfo.builder()
