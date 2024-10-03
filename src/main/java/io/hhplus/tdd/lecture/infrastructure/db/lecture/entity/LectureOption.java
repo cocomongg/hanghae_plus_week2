@@ -65,4 +65,8 @@ public class LectureOption {
             .updatedAt(this.updatedAt)
             .build();
     }
+
+    public void increaseCurrentApplyCount() {
+        this.currentApplyCount++;
+    }
 }

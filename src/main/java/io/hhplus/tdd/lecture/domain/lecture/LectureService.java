@@ -1,5 +1,6 @@
 package io.hhplus.tdd.lecture.domain.lecture;
 
+import io.hhplus.tdd.lecture.domain.lecture.dto.LectureCommand.CreateApplyHistory;
 import io.hhplus.tdd.lecture.domain.lecture.exception.LectureException;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
@@ -16,7 +17,7 @@ public class LectureService {
 
     public void checkLectureExists(Long lectureId) {
         boolean existsLecture = lectureRepository.existsLecture(lectureId);
-        if(existsLecture) {
+        if(!existsLecture) {
             throw LectureException.NOT_FOUND_LECTURE;
         }
     }
@@ -31,5 +32,17 @@ public class LectureService {
 
     public List<LectureOptionInfo> getLectureOptions(Long lectureId) {
         return lectureRepository.getLectureOptions(lectureId);
+    }
+
+    public LectureOptionInfo getLectureOption(Long lectureOptionId) {
+        return lectureRepository.getLectureOption(lectureOptionId);
+    }
+
+    public void increaseCurrentApplyCapacity(Long lectureOptionId) {
+        lectureRepository.increaseCurrentApplyCapacity(lectureOptionId);
+    }
+
+    public void saveApplyHistory(CreateApplyHistory command) {
+        lectureRepository.saveApplyHistory(command);
     }
 }

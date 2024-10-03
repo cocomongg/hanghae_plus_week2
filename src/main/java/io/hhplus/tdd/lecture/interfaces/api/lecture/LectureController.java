@@ -23,16 +23,23 @@ public class LectureController {
 
     private final LectureFacade lectureFacade;
 
-    // 1. 특강 목록 전체 조회
+    // 1-1. 특강 목록 전체 조회
     @GetMapping("")
     public ApiResponse<List<LectureItem>> getLectures() {
         return ApiResponse.OK(lectureFacade.getLectures());
     }
 
-    // 2. 선택한 특강의 날짜별로 신청가능한 목록 조회
+    // 1-2. 선택한 특강의 날짜별로 신청가능한 목록 조회
     @GetMapping("/options")
     public ApiResponse<List<LectureOptionItem>> getApplicableLectureOptions(GetApplicableLectureOptions req) {
         return ApiResponse.OK(lectureFacade.getApplicableLectureOptions(req.getLectureId()));
+    }
+
+    // 2. 특강 신청
+    @PostMapping("/options/apply")
+    public ApiResponse<?> applyLecture(@RequestBody ApplyLecture req) {
+        lectureFacade.applyLecture(req.getMemberId(), req.getLectureOptionId());
+        return ApiResponse.OK();
     }
 
     @GetMapping("/apply-histories")
@@ -42,10 +49,5 @@ public class LectureController {
             0, 0, 0, List.of(new LectureResponse.GetLectureApplyHistories()));
 
         return ApiResponse.OK(getLectureApplyHistoriesPageResponse);
-    }
-
-    @PostMapping("/options/apply")
-    public ApiResponse<?> applyLecture(@RequestBody ApplyLecture req) {
-        return ApiResponse.OK();
     }
 }

@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum LectureErrorCode implements DomainErrorCode {
+    NOT_POSSIBLE_APPLY(400, "400_1", "Can't apply"),
     NOT_FOUND_LECTURE_OPTION(404, "404_1", "LectureOption not found"),
     NOT_FOUND_LECTURE_CAPACITY(404, "404_2", "LectureCapacity not found"),
     NOT_FOUND_LECTURE(404, "404_3", "Lecture not found");
@@ -18,6 +19,6 @@ public enum LectureErrorCode implements DomainErrorCode {
 
     @Override
     public ErrorInfo getErrorInfo() {
-        return null;
+        return new ErrorInfo(this.status, this.code, this.message);
     }
 }

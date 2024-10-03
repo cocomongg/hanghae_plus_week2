@@ -1,9 +1,13 @@
 package io.hhplus.tdd.lecture.infrastructure.db.lecture.repository.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import io.hhplus.tdd.lecture.domain.lecture.exception.LectureErrorCode;
+import io.hhplus.tdd.lecture.domain.lecture.exception.LectureException;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureStatus;
@@ -16,6 +20,7 @@ import io.hhplus.tdd.lecture.infrastructure.db.lecture.repository.LectureOptionJ
 import io.hhplus.tdd.lecture.infrastructure.db.lecture.repository.LecturerJpaRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -171,6 +176,109 @@ class LectureRepositoryImplTest {
                         lectureOption2.getLectureEndAt(), lectureOption2.getMaxApplyCount(),
                         lectureOption2.getCreatedAt())
                 );
+        }
+    }
+
+    @DisplayName("LectureOption 조회 테스트")
+    @Nested
+    class GetLectureOptionTest {
+        @DisplayName("lectureOptionId에 해당하는 LectureOption이 없다면 LectureException이 발생한다.")
+        @Test
+        void should_ThrowLectureException_When_LectureOptionNotFound() {
+            // given
+            Long lectureOptionId = 0L;
+            when(lectureOptionJpaRepository.findById(lectureOptionId))
+                .thenReturn(Optional.empty());
+
+            // when, then
+            assertThatThrownBy(() -> lectureRepositoryImpl.getLectureOption(lectureOptionId))
+                .isInstanceOf(LectureException.class)
+                .hasMessage(LectureErrorCode.NOT_FOUND_LECTURE_OPTION.getMessage());
+        }
+
+        @DisplayName("lectureOptionId에 해당하는 LectureOption이 있다면 LectureOptionInfo로 변환하여 반환한다.")
+        @Test
+        void should_ReturnLectureOptionInfo_When_LectureOptionFound() {
+            // given
+            Long lectureOptionId = 1L;
+            LocalDateTime now = LocalDateTime.now();
+
+            LectureOption lectureOption = LectureOption.builder()
+                .lectureOptionId(lectureOptionId)
+                .lectureId(1L)
+                .status(LectureStatus.APPLYING)
+                .lectureStartAt(now)
+                .lectureEndAt(now)
+                .maxApplyCount(30)
+                .currentApplyCount(10)
+                .createdAt(now)
+                .build();
+
+            when(lectureOptionJpaRepository.findById(lectureOptionId))
+                .thenReturn(Optional.of(lectureOption));
+
+            // when
+            LectureOptionInfo lectureOptionInfo =
+                lectureRepositoryImpl.getLectureOption(lectureOptionId);
+
+            // then
+            assertThat(lectureOption.getLectureOptionId()).isEqualTo(lectureOptionInfo.getLectureOptionId());
+            assertThat(lectureOption.getLectureId()).isEqualTo(lectureOptionInfo.getLectureId());
+            assertThat(lectureOption.getStatus()).isEqualTo(lectureOptionInfo.getStatus());
+            assertThat(lectureOption.getLectureStartAt()).isEqualTo(lectureOptionInfo.getLectureStartAt());
+            assertThat(lectureOption.getLectureEndAt()).isEqualTo(lectureOptionInfo.getLectureEndAt());
+            assertThat(lectureOption.getMaxApplyCount()).isEqualTo(lectureOptionInfo.getMaxApplyCount());
+            assertThat(lectureOption.getCurrentApplyCount()).isEqualTo(lectureOptionInfo.getCurrentApplyCount());
+            assertThat(lectureOption.getCreatedAt()).isEqualTo(lectureOptionInfo.getCreatedAt());
+        }
+    }
+
+    @DisplayName("LectureOption currentApplyCount 업데이트 테스트")
+    @Nested
+    class IncreaseCurrentApplyCapacityTest {
+        @DisplayName("lectureOptionId에 해당하는 LectureOption이 없다면 LectureException이 발생한다.")
+        @Test
+        void should_ThrowLectureException_When_LectureOptionNotFound() {
+            // given
+            Long lectureOptionId = 0L;
+            when(lectureOptionJpaRepository.findById(lectureOptionId))
+                .thenReturn(Optional.empty());
+
+            // when, then
+            assertThatThrownBy(() -> lectureRepositoryImpl.getLectureOption(lectureOptionId))
+                .isInstanceOf(LectureException.class)
+                .hasMessage(LectureErrorCode.NOT_FOUND_LECTURE_OPTION.getMessage());
+        }
+
+        @DisplayName("존재하는 LectureOption의 currentApplyCount를 1 증가시킨다.")
+        @Test
+        void should_IncreaseCurrentApplyCount_When_LectureOptionFound() {
+            // given
+            Long lectureOptionId = 1L;
+            int prevApplyCount = 10;
+            LocalDateTime now = LocalDateTime.now();
+
+            LectureOption lectureOption = LectureOption.builder()
+                .lectureOptionId(lectureOptionId)
+                .lectureId(1L)
+                .status(LectureStatus.APPLYING)
+                .lectureStartAt(now)
+                .lectureEndAt(now)
+                .maxApplyCount(30)
+                .currentApplyCount(10)
+                .createdAt(now)
+                .build();
+
+            when(lectureOptionJpaRepository.findById(lectureOptionId))
+                .thenReturn(Optional.of(lectureOption));
+
+            // when
+            LectureOptionInfo lectureOptionInfo = lectureRepositoryImpl.increaseCurrentApplyCapacity(
+                lectureOptionId);
+
+            // then
+            assertThat(lectureOptionInfo.getLectureOptionId()).isEqualTo(lectureOption.getLectureOptionId());
+            assertThat(lectureOptionInfo.getCurrentApplyCount()).isEqualTo(prevApplyCount + 1);
         }
     }
 }
