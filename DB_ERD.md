@@ -1,5 +1,5 @@
 # 1. ERD
-![스크린샷 2024-10-04 오전 3 39 07](https://github.com/user-attachments/assets/d5df8992-04ff-4013-9aa2-df061d616138)
+<img width="605" alt="스크린샷 2024-10-04 오전 9 09 19" src="https://github.com/user-attachments/assets/72fcea67-0a14-485a-9c4f-51b1c511d077">
 <br/>
 <br/>
 
