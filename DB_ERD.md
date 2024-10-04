@@ -6,7 +6,7 @@
 # 2. 테이블 관계
 - `lecture_apply_history` 와 `mebmer`, `lecture`, `lecture_option`은 N:1 관계로 설정했습니다.
 - `lecture` 와 `lecture_option`은 1:N 관계로 설정했습니다.
-  - 확장 가능성을 열어두고, 하나의 특강에 여러 옵션이 생길 수 있는 상황을 가정했습니다.
+  - 확장 가능성을 열어두고, 하나의 특강에 여러 옵션(강의 시간 등)이 생길 수 있는 상황을 가정했습니다.
 <br/>
 
 # 3. 테이블 컬럼
@@ -26,6 +26,8 @@
 - `current_apply_count` : 현재 신청 인원 수
 - `apply_start_date` : 신청 시작일
 - `apply_end_date` : 신청 종료일
+- `lecture_start_at` : 강의 시작일시
+- `lecture_end_at` : 강의 종료일시
 - `created_at`: DB에 실제 삽입된 일시
 - `updated_at`: 업데이트 일시
 <br/>
