@@ -31,7 +31,14 @@ public class LectureOption {
     @Column(name = "apply_start_date", nullable = false)
     private LocalDate applyStartDate;
 
+    @Column(name = "apply_end_date", nullable = false)
     private LocalDate applyEndDate;
+
+    @Column(name = "lecture_start_at", nullable = false)
+    private LocalDateTime lectureStartAt;
+
+    @Column(name = "lecture_end_at", nullable = false)
+    private LocalDateTime lectureEndAt;
 
     @Column(name = "max_apply_count")
     private int maxApplyCount;
@@ -51,6 +58,8 @@ public class LectureOption {
             .lectureId(this.lectureId)
             .applyStartDate(this.applyStartDate)
             .applyEndDate(this.applyEndDate)
+            .lectureStartAt(this.lectureStartAt)
+            .lectureEndAt(this.lectureEndAt)
             .maxApplyCount(this.maxApplyCount)
             .currentApplyCount(this.currentApplyCount)
             .build();

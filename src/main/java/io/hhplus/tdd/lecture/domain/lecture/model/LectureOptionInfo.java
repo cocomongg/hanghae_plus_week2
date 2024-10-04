@@ -1,6 +1,7 @@
 package io.hhplus.tdd.lecture.domain.lecture.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,4 +14,6 @@ public class LectureOptionInfo {
     private int currentApplyCount;
     private LocalDate applyStartDate;
     private LocalDate applyEndDate;
+    private LocalDateTime lectureStartAt;
+    private LocalDateTime lectureEndAt;
 }

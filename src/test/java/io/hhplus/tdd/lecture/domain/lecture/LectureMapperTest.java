@@ -38,13 +38,16 @@ class LectureMapperTest {
             .build();
 
         LocalDate nowDate = LocalDate.now();
+        LocalDateTime dateTime = LocalDateTime.now();
         LectureOptionInfo lectureOptionInfo1 = LectureOptionInfo.builder()
             .lectureOptionId(1L)
             .lectureId(1L)
             .maxApplyCount(30)
             .currentApplyCount(0)
+            .applyStartDate(nowDate)
             .applyEndDate(nowDate)
-            .applyEndDate(nowDate)
+            .lectureStartAt(dateTime)
+            .lectureEndAt(dateTime)
             .build();
 
         LectureOptionInfo lectureOptionInfo2 = LectureOptionInfo.builder()
@@ -52,8 +55,10 @@ class LectureMapperTest {
             .lectureId(1L)
             .maxApplyCount(30)
             .currentApplyCount(0)
+            .applyStartDate(nowDate)
             .applyEndDate(nowDate)
-            .applyEndDate(nowDate)
+            .lectureStartAt(dateTime)
+            .lectureEndAt(dateTime)
             .build();
 
         List<LectureInfo> lectures = List.of(lectureInfo1);

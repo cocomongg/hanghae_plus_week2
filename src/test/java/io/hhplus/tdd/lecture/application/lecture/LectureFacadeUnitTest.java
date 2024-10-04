@@ -17,6 +17,7 @@ import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
 import io.hhplus.tdd.lecture.domain.member.MemberService;
 import io.hhplus.tdd.lecture.domain.member.model.MemberInfo;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
@@ -88,8 +89,10 @@ class LectureFacadeUnitTest {
                 .lectureId(lectureId)
                 .maxApplyCount(30)
                 .currentApplyCount(30)
+                .applyStartDate(LocalDate.now())
                 .applyEndDate(LocalDate.now())
-                .applyEndDate(LocalDate.now())
+                .lectureStartAt(LocalDateTime.now())
+                .lectureEndAt(LocalDateTime.now())
                 .build();
 
             when(memberService.getMember(memberId))
@@ -172,8 +175,10 @@ class LectureFacadeUnitTest {
                 .lectureId(lectureId)
                 .maxApplyCount(30)
                 .currentApplyCount(0)
+                .applyStartDate(LocalDate.now())
                 .applyEndDate(LocalDate.now())
-                .applyEndDate(LocalDate.now())
+                .lectureStartAt(LocalDateTime.now())
+                .lectureEndAt(LocalDateTime.now())
                 .build();
 
             when(memberService.getMember(memberId))

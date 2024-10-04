@@ -79,6 +79,8 @@ class LectureFacadeIntegrationTest {
                     .lectureId(lecture1.getLectureId())
                     .applyStartDate(date)
                     .applyEndDate(date.plusDays(1))
+                    .lectureStartAt(LocalDateTime.now())
+                    .lectureEndAt(LocalDateTime.now().plusHours(1))
                     .maxApplyCount(30)
                     .currentApplyCount(0)
                     .createdAt(LocalDateTime.now())
@@ -90,6 +92,8 @@ class LectureFacadeIntegrationTest {
                     .lectureId(lecture1.getLectureId())
                     .applyStartDate(date)
                     .applyEndDate(date.plusDays(1))
+                    .lectureStartAt(LocalDateTime.now())
+                    .lectureEndAt(LocalDateTime.now().plusHours(1))
                     .maxApplyCount(30)
                     .currentApplyCount(0)
                     .createdAt(LocalDateTime.now())
@@ -113,14 +117,17 @@ class LectureFacadeIntegrationTest {
             assertThat(lectureOptionInfos).hasSize(2)
                 .extracting(LectureOptionInfo::getLectureOptionId, LectureOptionInfo::getLectureId,
                     LectureOptionInfo::getMaxApplyCount, LectureOptionInfo::getCurrentApplyCount,
-                    LectureOptionInfo::getApplyStartDate, LectureOptionInfo::getApplyEndDate)
+                    LectureOptionInfo::getApplyStartDate, LectureOptionInfo::getApplyEndDate,
+                    LectureOptionInfo::getLectureStartAt, LectureOptionInfo::getLectureEndAt)
                 .containsExactlyInAnyOrder(
                     tuple(lectureOption1.getLectureOptionId(), lectureOption1.getLectureId(),
                         lectureOption1.getMaxApplyCount(), lectureOption1.getCurrentApplyCount(),
-                        lectureOption1.getApplyStartDate(), lectureOption1.getApplyEndDate()),
+                        lectureOption1.getApplyStartDate(), lectureOption1.getApplyEndDate(),
+                        lectureOption1.getLectureStartAt(), lectureOption1.getLectureEndAt()),
                     tuple(lectureOption2.getLectureOptionId(), lectureOption2.getLectureId(),
                         lectureOption2.getMaxApplyCount(), lectureOption2.getCurrentApplyCount(),
-                        lectureOption2.getApplyStartDate(), lectureOption2.getApplyEndDate())
+                        lectureOption2.getApplyStartDate(), lectureOption2.getApplyEndDate(),
+                        lectureOption2.getLectureStartAt(), lectureOption2.getLectureEndAt())
                 );
         }
     }
@@ -174,6 +181,8 @@ class LectureFacadeIntegrationTest {
                     .lectureId(0L)
                     .applyStartDate(LocalDate.now())
                     .applyEndDate(LocalDate.now().plusDays(1))
+                    .lectureStartAt(LocalDateTime.now())
+                    .lectureEndAt(LocalDateTime.now().plusHours(1))
                     .maxApplyCount(30)
                     .currentApplyCount(0)
                     .createdAt(LocalDateTime.now())
@@ -211,6 +220,8 @@ class LectureFacadeIntegrationTest {
                     .lectureId(lecture.getLectureId())
                     .applyStartDate(LocalDate.now())
                     .applyEndDate(LocalDate.now().plusDays(1))
+                    .lectureStartAt(LocalDateTime.now())
+                    .lectureEndAt(LocalDateTime.now().plusHours(1))
                     .maxApplyCount(30)
                     .currentApplyCount(0)
                     .createdAt(LocalDateTime.now())
@@ -259,6 +270,8 @@ class LectureFacadeIntegrationTest {
                     .lectureId(lecture.getLectureId())
                     .applyStartDate(LocalDate.now())
                     .applyEndDate(LocalDate.now().plusDays(1))
+                    .lectureStartAt(LocalDateTime.now())
+                    .lectureEndAt(LocalDateTime.now().plusHours(1))
                     .maxApplyCount(30)
                     .currentApplyCount(30)
                     .createdAt(LocalDateTime.now())
@@ -296,6 +309,8 @@ class LectureFacadeIntegrationTest {
                     .lectureId(lecture.getLectureId())
                     .applyStartDate(LocalDate.now())
                     .applyEndDate(LocalDate.now().plusDays(1))
+                    .lectureStartAt(LocalDateTime.now())
+                    .lectureEndAt(LocalDateTime.now().plusHours(1))
                     .maxApplyCount(30)
                     .currentApplyCount(prevApplyCount)
                     .createdAt(LocalDateTime.now())

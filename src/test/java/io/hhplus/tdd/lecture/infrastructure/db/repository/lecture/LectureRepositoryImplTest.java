@@ -86,6 +86,7 @@ class LectureRepositoryImplTest {
     void should_ReturnLectureOptionMap_When_FindByDate() {
         // given
         LocalDate date = LocalDate.now();
+        LocalDateTime dateTime = LocalDateTime.now();
         Long lectureId = 1L;
 
         LectureOption lectureOption1 = LectureOption.builder()
@@ -93,6 +94,8 @@ class LectureRepositoryImplTest {
             .lectureId(lectureId)
             .applyStartDate(date)
             .applyEndDate(date.plusDays(1))
+            .lectureStartAt(dateTime)
+            .lectureEndAt(dateTime.plusHours(1))
             .maxApplyCount(30)
             .currentApplyCount(0)
             .build();
@@ -102,6 +105,8 @@ class LectureRepositoryImplTest {
             .lectureId(lectureId)
             .applyStartDate(date)
             .applyEndDate(date.plusDays(1))
+            .lectureStartAt(dateTime)
+            .lectureEndAt(dateTime.plusHours(1))
             .maxApplyCount(30)
             .currentApplyCount(0)
             .build();
@@ -119,17 +124,34 @@ class LectureRepositoryImplTest {
         List<LectureOptionInfo> lectureOptionInfos = lectureOptionMap.get(lectureId);
         assertThat(lectureOptionInfos)
             .hasSize(2)
-            .extracting(LectureOptionInfo::getLectureOptionId, LectureOptionInfo::getLectureId,
-                LectureOptionInfo::getMaxApplyCount, LectureOptionInfo::getCurrentApplyCount,
-                LectureOptionInfo::getApplyStartDate, LectureOptionInfo::getApplyEndDate)
+            .extracting(
+                LectureOptionInfo::getLectureOptionId,
+                LectureOptionInfo::getLectureId,
+                LectureOptionInfo::getMaxApplyCount,
+                LectureOptionInfo::getCurrentApplyCount,
+                LectureOptionInfo::getApplyStartDate,
+                LectureOptionInfo::getApplyEndDate,
+                LectureOptionInfo::getLectureStartAt,
+                LectureOptionInfo::getLectureEndAt)
             .containsExactlyInAnyOrder(
-                tuple(lectureOption1.getLectureOptionId(), lectureOption1.getLectureId(),
-                    lectureOption1.getMaxApplyCount(), lectureOption1.getCurrentApplyCount(),
-                    lectureOption1.getApplyStartDate(), lectureOption1.getApplyEndDate()),
-                tuple(lectureOption2.getLectureOptionId(), lectureOption2.getLectureId(),
-                    lectureOption2.getMaxApplyCount(), lectureOption2.getCurrentApplyCount(),
-                    lectureOption2.getApplyStartDate(), lectureOption2.getApplyEndDate())
-            );
+                tuple(
+                    lectureOption1.getLectureOptionId(),
+                    lectureOption1.getLectureId(),
+                    lectureOption1.getMaxApplyCount(),
+                    lectureOption1.getCurrentApplyCount(),
+                    lectureOption1.getApplyStartDate(),
+                    lectureOption1.getApplyEndDate(),
+                    lectureOption1.getLectureStartAt(),
+                    lectureOption1.getLectureEndAt()),
+                tuple(
+                    lectureOption2.getLectureOptionId(),
+                    lectureOption2.getLectureId(),
+                    lectureOption2.getMaxApplyCount(),
+                    lectureOption2.getCurrentApplyCount(),
+                    lectureOption2.getApplyStartDate(),
+                    lectureOption2.getApplyEndDate(),
+                    lectureOption1.getLectureStartAt(),
+                    lectureOption1.getLectureEndAt()));
     }
     
     @DisplayName("LecuteId를 통해 Lecture 조회 테스트")
@@ -211,6 +233,8 @@ class LectureRepositoryImplTest {
                 .lectureId(1L)
                 .applyStartDate(date)
                 .applyEndDate(date)
+                .lectureStartAt(nowDatetime)
+                .lectureEndAt(nowDatetime.plusHours(1))
                 .maxApplyCount(30)
                 .currentApplyCount(10)
                 .createdAt(nowDatetime)
@@ -228,6 +252,8 @@ class LectureRepositoryImplTest {
             assertThat(lectureOption.getLectureId()).isEqualTo(lectureOptionInfo.getLectureId());
             assertThat(lectureOption.getApplyStartDate()).isEqualTo(lectureOptionInfo.getApplyStartDate());
             assertThat(lectureOption.getApplyEndDate()).isEqualTo(lectureOptionInfo.getApplyEndDate());
+            assertThat(lectureOption.getLectureStartAt()).isEqualTo(lectureOptionInfo.getLectureStartAt());
+            assertThat(lectureOption.getLectureEndAt()).isEqualTo(lectureOptionInfo.getLectureEndAt());
             assertThat(lectureOption.getMaxApplyCount()).isEqualTo(lectureOptionInfo.getMaxApplyCount());
             assertThat(lectureOption.getCurrentApplyCount()).isEqualTo(lectureOptionInfo.getCurrentApplyCount());
         }
@@ -257,12 +283,15 @@ class LectureRepositoryImplTest {
             Long lectureOptionId = 1L;
             int prevApplyCount = 10;
             LocalDate date = LocalDate.now();
+            LocalDateTime dateTime = LocalDateTime.now();
 
             LectureOption lectureOption = LectureOption.builder()
                 .lectureOptionId(lectureOptionId)
                 .lectureId(1L)
                 .applyStartDate(date)
                 .applyEndDate(date.plusDays(1))
+                .lectureStartAt(dateTime)
+                .lectureEndAt(dateTime.plusHours(1))
                 .maxApplyCount(30)
                 .currentApplyCount(prevApplyCount)
                 .build();

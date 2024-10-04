@@ -122,6 +122,7 @@ class LectureServiceIntegrationTest {
     void should_ReturnLectureOptionMap_When_FindByDate() {
         // given
         LocalDate date = LocalDate.now();
+        LocalDateTime dateTime = LocalDateTime.now();
         Lecture lecture = lectureJpaRepository.save(
             Lecture.builder()
                 .title("title1")
@@ -136,6 +137,8 @@ class LectureServiceIntegrationTest {
                 .lectureId(lecture.getLectureId())
                 .applyStartDate(date.minusDays(1))
                 .applyEndDate(date.plusDays(1))
+                .lectureStartAt(dateTime)
+                .lectureEndAt(dateTime.plusHours(1))
                 .maxApplyCount(30)
                 .currentApplyCount(0)
                 .createdAt(LocalDateTime.now())
@@ -146,6 +149,8 @@ class LectureServiceIntegrationTest {
                 .lectureId(lecture.getLectureId())
                 .applyStartDate(date.minusDays(1))
                 .applyEndDate(date.plusDays(1))
+                .lectureStartAt(dateTime)
+                .lectureEndAt(dateTime.plusHours(1))
                 .maxApplyCount(30)
                 .currentApplyCount(0)
                 .createdAt(LocalDateTime.now())
@@ -164,7 +169,9 @@ class LectureServiceIntegrationTest {
                 LectureOptionInfo::getMaxApplyCount,
                 LectureOptionInfo::getCurrentApplyCount,
                 LectureOptionInfo::getApplyStartDate,
-                LectureOptionInfo::getApplyEndDate)
+                LectureOptionInfo::getApplyEndDate,
+                LectureOptionInfo::getLectureStartAt,
+                LectureOptionInfo::getLectureEndAt)
             .containsExactlyInAnyOrder(
                 tuple(
                     lectureOption1.getLectureOptionId(),
@@ -172,14 +179,18 @@ class LectureServiceIntegrationTest {
                     lectureOption1.getMaxApplyCount(),
                     lectureOption1.getCurrentApplyCount(),
                     lectureOption1.getApplyStartDate(),
-                    lectureOption1.getApplyEndDate()),
+                    lectureOption1.getApplyEndDate(),
+                    lectureOption1.getLectureStartAt(),
+                    lectureOption1.getLectureEndAt()),
                 tuple(
                     lectureOption2.getLectureOptionId(),
                     lectureOption2.getLectureId(),
                     lectureOption2.getMaxApplyCount(),
                     lectureOption2.getCurrentApplyCount(),
                     lectureOption2.getApplyStartDate(),
-                    lectureOption2.getApplyEndDate()));
+                    lectureOption2.getApplyEndDate(),
+                    lectureOption2.getLectureStartAt(),
+                    lectureOption2.getLectureEndAt()));
     }
 
     @DisplayName("lectureOptionId에 해당하는 LectureOption을 조회한다.")
@@ -191,6 +202,8 @@ class LectureServiceIntegrationTest {
                 .lectureId(1L)
                 .applyStartDate(LocalDate.now())
                 .applyEndDate(LocalDate.now())
+                .lectureStartAt(LocalDateTime.now())
+                .lectureEndAt(LocalDateTime.now())
                 .maxApplyCount(30)
                 .currentApplyCount(0)
                 .createdAt(LocalDateTime.now())
@@ -207,6 +220,8 @@ class LectureServiceIntegrationTest {
         assertThat(result.getApplyEndDate()).isEqualTo(lectureOption.getApplyEndDate());
         assertThat(result.getMaxApplyCount()).isEqualTo(lectureOption.getMaxApplyCount());
         assertThat(result.getCurrentApplyCount()).isEqualTo(lectureOption.getCurrentApplyCount());
+        assertThat(result.getLectureStartAt()).isEqualTo(lectureOption.getLectureStartAt());
+        assertThat(result.getLectureEndAt()).isEqualTo(lectureOption.getLectureEndAt());
     }
 
     @DisplayName("lectureOptionId에 해당하는 LectureOption의 applyCount를 증가시킨다.")
@@ -214,11 +229,14 @@ class LectureServiceIntegrationTest {
     void should_IncreaseCurrentApplyCount_When_ByLectureOptionId() {
         // given
         int prevApplyCount = 0;
+        LocalDateTime dateTime = LocalDateTime.now();
         LectureOption lectureOption = lectureOptionJpaRepository.save(
             LectureOption.builder()
                 .lectureId(1L)
                 .applyStartDate(LocalDate.now())
                 .applyEndDate(LocalDate.now())
+                .lectureStartAt(dateTime)
+                .lectureEndAt(dateTime.plusHours(1))
                 .maxApplyCount(30)
                 .currentApplyCount(prevApplyCount)
                 .createdAt(LocalDateTime.now())
