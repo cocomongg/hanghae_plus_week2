@@ -61,6 +61,15 @@ public class LectureRepositoryImpl implements LectureRepository {
         return lectureOption.toLectureOptionInfo();
     }
 
+    @Override
+    public LectureOptionInfo getLectureOptionWithLock(Long lectureOptionId) {
+        LectureOption lectureOption = lectureOptionJpaRepository.findByIdWithPessimisticLock(
+                lectureOptionId)
+            .orElseThrow(() -> LectureException.NOT_FOUND_LECTURE_OPTION);
+
+        return lectureOption.toLectureOptionInfo();
+    }
+
     @Transactional
     @Override
     public LectureOptionInfo increaseCurrentApplyCapacity(Long lectureOptionId) {

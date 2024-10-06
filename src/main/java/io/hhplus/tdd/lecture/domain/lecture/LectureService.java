@@ -32,6 +32,10 @@ public class LectureService {
         return lectureRepository.getLectureOption(lectureOptionId);
     }
 
+    public LectureOptionInfo getLectureOptionWithLock(Long lectureOptionId) {
+        return lectureRepository.getLectureOptionWithLock(lectureOptionId);
+    }
+
     public void increaseCurrentApplyCapacity(Long lectureOptionId) {
         lectureRepository.increaseCurrentApplyCapacity(lectureOptionId);
     }

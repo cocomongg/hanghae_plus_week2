@@ -5,6 +5,7 @@ import io.hhplus.tdd.lecture.domain.lecture.model.LectureApplyHistoryInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureCommand.CreateApplyHistory;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureInfo;
 import io.hhplus.tdd.lecture.domain.lecture.model.LectureOptionInfo;
+import io.hhplus.tdd.lecture.infrastructure.db.entity.lecture.LectureOption;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -25,4 +26,6 @@ public interface LectureRepository {
     boolean existsAppliedLectureHistory(Long memberId, Long lectureId);
 
     List<LectureApplyHistoryInfo> getAppliedLectureHistories(Long memberId);
+
+    LectureOptionInfo getLectureOptionWithLock(Long lectureOptionId);
 }
